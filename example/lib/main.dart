@@ -41,6 +41,28 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Container(
+              padding: const EdgeInsets.all(16),
+              margin: const EdgeInsets.symmetric(horizontal: 24),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(8)),
+              child: CustomMonthPicker(
+                highlightColor: const Color(0xFF1FA0C9),
+                onSelected: (month, year) {
+                  if (kDebugMode) {
+                    print('Selected month: $month, year: $year');
+                  }
+                  setState(() {
+                    this.month = month;
+                    this.year = year;
+                  });
+                },
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
             ElevatedButton(
                 onPressed: () {
                   showMonthPicker(context, onSelected: (month, year) {
