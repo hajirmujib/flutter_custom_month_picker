@@ -1,14 +1,12 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-part 'month_picker.dart';
-
-part 'year_picker.dart';
-
 part '../controller/month_year_controller.dart';
+part 'month_picker.dart';
+part 'year_picker.dart';
 
 /// public method to access the month picker dialog with the required parameters
 void showMonthPicker(context,
@@ -66,30 +64,44 @@ void showMonthPicker(context,
     return;
   }
 
-  /// show the dialog
-  showDialog(
-      context: context,
-      builder: (BuildContext ctx) {
-        return _CustomMonthPicker(
-            onSelected: onSelected,
-            firstYear: firstYear,
-            initialSelectedMonth: initialSelectedMonth,
-            initialSelectedYear: initialSelectedYear,
-            lastYear: lastYear,
-            firstEnabledMonth: firstEnabledMonth,
-            lastEnabledMonth: lastEnabledMonth,
-            selectButtonText: selectButtonText,
-            cancelButtonText: cancelButtonText,
-            highlightColor: highlightColor,
-            contentBackgroundColor: contentBackgroundColor,
-            dialogBackgroundColor: dialogBackgroundColor,
-            textColor: textColor);
-      });
+  // /// show the dialog
+  // showDialog(
+  //     context: context,
+  //     builder: (BuildContext ctx) {
+  //       return _CustomMonthPicker(
+  //           onSelected: onSelected,
+  //           firstYear: firstYear,
+  //           initialSelectedMonth: initialSelectedMonth,
+  //           initialSelectedYear: initialSelectedYear,
+  //           lastYear: lastYear,
+  //           firstEnabledMonth: firstEnabledMonth,
+  //           lastEnabledMonth: lastEnabledMonth,
+  //           selectButtonText: selectButtonText,
+  //           cancelButtonText: cancelButtonText,
+  //           highlightColor: highlightColor,
+  //           contentBackgroundColor: contentBackgroundColor,
+  //           dialogBackgroundColor: dialogBackgroundColor,
+  //           textColor: textColor);
+  //     });
+  CustomMonthPicker(
+      onSelected: onSelected,
+      firstYear: firstYear,
+      initialSelectedMonth: initialSelectedMonth,
+      initialSelectedYear: initialSelectedYear,
+      lastYear: lastYear,
+      firstEnabledMonth: firstEnabledMonth,
+      lastEnabledMonth: lastEnabledMonth,
+      selectButtonText: selectButtonText,
+      cancelButtonText: cancelButtonText,
+      highlightColor: highlightColor,
+      contentBackgroundColor: contentBackgroundColor,
+      dialogBackgroundColor: dialogBackgroundColor,
+      textColor: textColor);
 }
 
-class _CustomMonthPicker extends StatefulWidget {
-  const _CustomMonthPicker({
-    Key? key,
+class CustomMonthPicker extends StatefulWidget {
+  const CustomMonthPicker({
+    super.key,
     required this.onSelected,
     this.firstYear,
     this.initialSelectedMonth,
@@ -103,7 +115,8 @@ class _CustomMonthPicker extends StatefulWidget {
     this.dialogBackgroundColor,
     this.firstEnabledMonth,
     this.lastEnabledMonth,
-  }) : super(key: key);
+    this.textStyle,
+  });
 
   final Function(int, int) onSelected;
   final int? firstYear;
@@ -118,12 +131,14 @@ class _CustomMonthPicker extends StatefulWidget {
   final Color? textColor;
   final Color? dialogBackgroundColor;
   final Color? contentBackgroundColor;
+  final TextStyle? textStyle;
 
   @override
-  State<_CustomMonthPicker> createState() => _CustomMonthPickerState();
+  State<CustomMonthPicker> createState() => _CustomMonthPickerState();
 }
 
-class _CustomMonthPickerState extends State<_CustomMonthPicker> {
+class _CustomMonthPickerState extends State<CustomMonthPicker>
+    with TickerProviderStateMixin {
   late _MonthYearController controller;
 
   @override
@@ -142,27 +157,56 @@ class _CustomMonthPickerState extends State<_CustomMonthPicker> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      insetPadding: const EdgeInsets.all(15.0),
-      contentPadding: const EdgeInsets.symmetric(vertical: 15.0),
-      scrollable: true,
-      backgroundColor: widget.dialogBackgroundColor ?? const Color(0xffefefef),
-      shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(15.0))),
-      content: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: Obx(
-          () => Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              yearSelectionButton(),
-              const SizedBox(height: 15),
-              returnSelectionView(),
-              const SizedBox(height: 15),
-              dialogFooter()
-            ],
-          ),
+    // return AlertDialog(
+    //   insetPadding: const EdgeInsets.all(15.0),
+    //   contentPadding: const EdgeInsets.symmetric(vertical: 15.0),
+    //   scrollable: true,
+    //   backgroundColor: widget.dialogBackgroundColor ?? const Color(0xffefefef),
+    //   shape: const RoundedRectangleBorder(
+    //       borderRadius: BorderRadius.all(Radius.circular(15.0))),
+    //   content: SizedBox(
+    //     width: MediaQuery.of(context).size.width,
+    //     child: Obx(
+    //       () => Column(
+    //         mainAxisSize: MainAxisSize.min,
+    //         crossAxisAlignment: CrossAxisAlignment.start,
+    //         children: [
+    //           yearSelectionButton(),
+    //           const SizedBox(height: 15),
+    //           returnSelectionView(),
+    //           const SizedBox(height: 15),
+    //           dialogFooter()
+    //         ],
+    //       ),
+    //     ),
+    //   ),
+    // );
+    return AnimatedSize(
+      duration: const Duration(milliseconds: 500),
+      reverseDuration: const Duration(milliseconds: 500),
+
+      // width: MediaQuery.of(context).size.width,
+      child: Obx(
+        () => Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                yearSelectionButton(),
+                moveYear(),
+              ],
+            ),
+            const SizedBox(height: 16),
+            AnimatedSwitcher(
+                duration: const Duration(milliseconds: 500),
+                transitionBuilder: (Widget child, Animation<double> animation) {
+                  return ScaleTransition(scale: animation, child: child);
+                },
+                child: returnSelectionView()),
+
+            // dialogFooter()
+          ],
         ),
       ),
     );
@@ -174,52 +218,100 @@ class _CustomMonthPickerState extends State<_CustomMonthPicker> {
       return _YearPicker(
         highlightColor: widget.highlightColor!,
         backgroundColor: widget.contentBackgroundColor!,
+        onSelected: widget.onSelected,
       );
     }
     return _MonthPicker(
       highlightColor: widget.highlightColor!,
       backgroundColor: widget.contentBackgroundColor!,
+      onSelected: widget.onSelected,
+      textStyle: widget.textStyle,
+    );
+  }
+
+//return arrow lef & right
+  Widget moveYear() {
+    return Row(
+      children: [
+        IconButton(
+          onPressed: () {
+            controller.selectedYear.value--;
+            controller.setYear(controller.selectedYear.value--);
+
+            widget.onSelected(
+                controller.selected.month, controller.selected.year);
+          },
+          icon: const Icon(Icons.arrow_back_ios),
+          iconSize: 18,
+          color: const Color(0xffA9AFB8),
+        ),
+        IconButton(
+          onPressed: () {
+            var nowYear = DateTime.now().year;
+
+            if (controller.selected.year >= nowYear) {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text(
+                  "This is the last year!!",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white),
+                ),
+              ));
+            } else {
+              controller.selectedYear.value++;
+              controller.setYear(controller.selectedYear.value++);
+
+              widget.onSelected(
+                  controller.selected.month, controller.selected.year);
+            }
+          },
+          icon: const Icon(
+            Icons.arrow_forward_ios,
+          ),
+          iconSize: 18,
+          color: const Color(0xffA9AFB8),
+        ),
+      ],
     );
   }
 
   /// return the year selection button
   Widget yearSelectionButton() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-      child: ElevatedButton(
-        onPressed: () {
-          controller.monthSelectionStarted(false);
-          controller
-              .yearSelectionStarted(!controller.yearSelectionStarted.value);
-        },
-        style: ElevatedButton.styleFrom(
-          elevation: 0,
-          backgroundColor: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5.0),
+    return GestureDetector(
+      onTap: () {
+        controller.monthSelectionStarted(false);
+        controller.yearSelectionStarted(!controller.yearSelectionStarted.value);
+        //  widget.onSelected(
+        //       controller.selected.month, controller.selected.year);
+      },
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Text(
+            controller.selectedYear.toString(),
+            style: widget.textStyle == null
+                ? const TextStyle(
+                    color: Color(0xFF7F8895),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600)
+                : widget.textStyle!.copyWith(
+                    color: const Color(0xFF7F8895),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600),
           ),
-          fixedSize: const Size(100, 45),
-          padding: const EdgeInsets.all(8),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              controller.selectedYear.toString(),
-              style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500),
-            ),
-            Icon(
-              controller.yearSelectionStarted.value
-                  ? Icons.keyboard_arrow_up_rounded
-                  : Icons.keyboard_arrow_down_rounded,
-              color: Colors.black,
-              size: 18,
-            ),
-          ],
-        ),
+          const SizedBox(
+            width: 8,
+          ),
+          Icon(
+            controller.yearSelectionStarted.value
+                ? Icons.keyboard_arrow_up_rounded
+                : Icons.keyboard_arrow_down_rounded,
+            color: const Color(0XFFA9AFB8),
+            size: 16,
+          ),
+        ],
       ),
     );
   }

@@ -2,10 +2,15 @@ part of 'custom_month_picker.dart';
 
 class _YearPicker extends StatefulWidget {
   const _YearPicker(
-      {required this.highlightColor, this.backgroundColor = Colors.white});
+      {required this.highlightColor,
+      this.backgroundColor = Colors.white,
+      required this.onSelected,
+      this.textStyle});
 
   final Color highlightColor;
   final Color backgroundColor;
+  final Function(int, int) onSelected;
+  final TextStyle? textStyle;
 
   @override
   State<_YearPicker> createState() => _YearPickerState();
@@ -41,6 +46,8 @@ class _YearPickerState extends State<_YearPicker> {
                       // set the selected year and close the year selection
                       controller.setYear(int.parse(controller.yearList[index]));
                       controller.yearSelectionStarted(false);
+                      widget.onSelected(
+                          controller.selected.month, controller.selected.year);
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -52,12 +59,23 @@ class _YearPickerState extends State<_YearPicker> {
                       child: Center(
                         child: Text(
                           controller.yearList[index],
-                          style: TextStyle(
-                            color: controller.selectedYear.value ==
-                                    int.parse(controller.yearList[index])
-                                ? Colors.white
-                                : Colors.black,
-                          ),
+                          style: widget.textStyle == null
+                              ? TextStyle(
+                                  color: controller.selectedYear.value ==
+                                          int.parse(controller.yearList[index])
+                                      ? Colors.white
+                                      : const Color(
+                                          0xFF546071,
+                                        ),
+                                  fontWeight: FontWeight.w500,
+                                )
+                              : widget.textStyle!.copyWith(
+                                  color: controller.selectedYear.value ==
+                                          int.parse(controller.yearList[index])
+                                      ? Colors.white
+                                      : const Color(0xFF546071),
+                                  fontWeight: FontWeight.w500,
+                                ),
                         ),
                       ),
                     ),
