@@ -58,7 +58,7 @@ class _MonthPickerState extends State<_MonthPicker> {
                         ? widget.highlightColor
                         : Colors.transparent),
                 child: Center(
-                  child: AutoSizeText(
+                  child: Text(
                     controller.monthsName[index],
                     style: widget.textStyle == null
                         ? TextStyle(
@@ -80,8 +80,6 @@ class _MonthPickerState extends State<_MonthPicker> {
                                     : const Color(0xFF546071),
                             fontWeight: FontWeight.w500,
                           ),
-                    minFontSize: 12,
-                    presetFontSizes: const [12, 14],
                   ),
                 ),
               ),
