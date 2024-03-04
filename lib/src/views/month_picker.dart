@@ -49,7 +49,7 @@ class _MonthPickerState extends State<_MonthPicker> {
             child: Obx(
               () => Container(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
+                    const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
                 width: (MediaQuery.of(context).size.width / 3) - 40,
                 margin: EdgeInsets.only(bottom: index > 8 ? 0 : 8),
                 decoration: BoxDecoration(
@@ -80,8 +80,8 @@ class _MonthPickerState extends State<_MonthPicker> {
                                     : const Color(0xFF546071),
                             fontWeight: FontWeight.w500,
                           ),
-                    minFontSize: 10,
-                    presetFontSizes: const [10, 11, 12, 14],
+                    minFontSize: 12,
+                    presetFontSizes: const [12, 14],
                   ),
                 ),
               ),
