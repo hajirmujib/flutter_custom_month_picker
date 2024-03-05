@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -65,25 +64,25 @@ void showMonthPicker(context,
     return;
   }
 
-  // /// show the dialog
-  // showDialog(
-  //     context: context,
-  //     builder: (BuildContext ctx) {
-  //       return _CustomMonthPicker(
-  //           onSelected: onSelected,
-  //           firstYear: firstYear,
-  //           initialSelectedMonth: initialSelectedMonth,
-  //           initialSelectedYear: initialSelectedYear,
-  //           lastYear: lastYear,
-  //           firstEnabledMonth: firstEnabledMonth,
-  //           lastEnabledMonth: lastEnabledMonth,
-  //           selectButtonText: selectButtonText,
-  //           cancelButtonText: cancelButtonText,
-  //           highlightColor: highlightColor,
-  //           contentBackgroundColor: contentBackgroundColor,
-  //           dialogBackgroundColor: dialogBackgroundColor,
-  //           textColor: textColor);
-  //     });
+  /// show the dialog
+  showDialog(
+      context: context,
+      builder: (BuildContext ctx) {
+        return CustomMonthPicker(
+            onSelected: onSelected,
+            firstYear: firstYear,
+            initialSelectedMonth: initialSelectedMonth,
+            initialSelectedYear: initialSelectedYear,
+            lastYear: lastYear,
+            firstEnabledMonth: firstEnabledMonth,
+            lastEnabledMonth: lastEnabledMonth,
+            selectButtonText: selectButtonText,
+            cancelButtonText: cancelButtonText,
+            highlightColor: highlightColor,
+            contentBackgroundColor: contentBackgroundColor,
+            dialogBackgroundColor: dialogBackgroundColor,
+            textColor: textColor);
+      });
   CustomMonthPicker(
       onSelected: onSelected,
       firstYear: firstYear,
