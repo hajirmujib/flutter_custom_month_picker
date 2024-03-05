@@ -83,20 +83,21 @@ void showMonthPicker(context,
             dialogBackgroundColor: dialogBackgroundColor,
             textColor: textColor);
       });
-  CustomMonthPicker(
-      onSelected: onSelected,
-      firstYear: firstYear,
-      initialSelectedMonth: initialSelectedMonth,
-      initialSelectedYear: initialSelectedYear,
-      lastYear: lastYear,
-      firstEnabledMonth: firstEnabledMonth,
-      lastEnabledMonth: lastEnabledMonth,
-      selectButtonText: selectButtonText,
-      cancelButtonText: cancelButtonText,
-      highlightColor: highlightColor,
-      contentBackgroundColor: contentBackgroundColor,
-      dialogBackgroundColor: dialogBackgroundColor,
-      textColor: textColor);
+
+  // CustomMonthPicker(
+  //     onSelected: onSelected,
+  //     firstYear: firstYear,
+  //     initialSelectedMonth: initialSelectedMonth,
+  //     initialSelectedYear: initialSelectedYear,
+  //     lastYear: lastYear,
+  //     firstEnabledMonth: firstEnabledMonth,
+  //     lastEnabledMonth: lastEnabledMonth,
+  //     selectButtonText: selectButtonText,
+  //     cancelButtonText: cancelButtonText,
+  //     highlightColor: highlightColor,
+  //     contentBackgroundColor: contentBackgroundColor,
+  //     dialogBackgroundColor: dialogBackgroundColor,
+  //     textColor: textColor);
 }
 
 class CustomMonthPicker extends StatefulWidget {
@@ -116,6 +117,7 @@ class CustomMonthPicker extends StatefulWidget {
     this.firstEnabledMonth,
     this.lastEnabledMonth,
     this.textStyle,
+    this.isDialog = false,
   });
 
   final Function(int, int) onSelected;
@@ -132,6 +134,7 @@ class CustomMonthPicker extends StatefulWidget {
   final Color? dialogBackgroundColor;
   final Color? contentBackgroundColor;
   final TextStyle? textStyle;
+  final bool isDialog;
 
   @override
   State<CustomMonthPicker> createState() => _CustomMonthPickerState();
@@ -157,59 +160,64 @@ class _CustomMonthPickerState extends State<CustomMonthPicker>
 
   @override
   Widget build(BuildContext context) {
-    // return AlertDialog(
-    //   insetPadding: const EdgeInsets.all(15.0),
-    //   contentPadding: const EdgeInsets.symmetric(vertical: 15.0),
-    //   scrollable: true,
-    //   backgroundColor: widget.dialogBackgroundColor ?? const Color(0xffefefef),
-    //   shape: const RoundedRectangleBorder(
-    //       borderRadius: BorderRadius.all(Radius.circular(15.0))),
-    //   content: SizedBox(
-    //     width: MediaQuery.of(context).size.width,
-    //     child: Obx(
-    //       () => Column(
-    //         mainAxisSize: MainAxisSize.min,
-    //         crossAxisAlignment: CrossAxisAlignment.start,
-    //         children: [
-    //           yearSelectionButton(),
-    //           const SizedBox(height: 15),
-    //           returnSelectionView(),
-    //           const SizedBox(height: 15),
-    //           dialogFooter()
-    //         ],
-    //       ),
-    //     ),
-    //   ),
-    // );
-    return AnimatedSize(
-      duration: const Duration(milliseconds: 500),
-      reverseDuration: const Duration(milliseconds: 500),
-
-      // width: MediaQuery.of(context).size.width,
-      child: Obx(
-        () => Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    if (widget.isDialog) {
+      return AlertDialog(
+        insetPadding: const EdgeInsets.all(15.0),
+        contentPadding: const EdgeInsets.symmetric(vertical: 15.0),
+        scrollable: true,
+        backgroundColor:
+            widget.dialogBackgroundColor ?? const Color(0xffefefef),
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(15.0))),
+        content: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: Obx(
+            () => Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 yearSelectionButton(),
-                moveYear(),
+                const SizedBox(height: 15),
+                returnSelectionView(),
+                const SizedBox(height: 15),
+                dialogFooter()
               ],
             ),
-            const SizedBox(height: 16),
-            AnimatedSwitcher(
-                duration: const Duration(milliseconds: 500),
-                transitionBuilder: (Widget child, Animation<double> animation) {
-                  return ScaleTransition(scale: animation, child: child);
-                },
-                child: returnSelectionView()),
-
-            // dialogFooter()
-          ],
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      return AnimatedSize(
+        duration: const Duration(milliseconds: 500),
+        reverseDuration: const Duration(milliseconds: 500),
+
+        // width: MediaQuery.of(context).size.width,
+        child: Obx(
+          () => Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  yearSelectionButton(),
+                  moveYear(),
+                ],
+              ),
+              const SizedBox(height: 16),
+              AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 500),
+                  transitionBuilder:
+                      (Widget child, Animation<double> animation) {
+                    return ScaleTransition(scale: animation, child: child);
+                  },
+                  child: returnSelectionView()),
+
+              // dialogFooter()
+            ],
+          ),
+        ),
+      );
+    }
   }
 
   /// return the month picker or year picker based on the view selection
