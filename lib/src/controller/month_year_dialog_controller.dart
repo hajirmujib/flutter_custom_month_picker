@@ -1,8 +1,8 @@
-part of '../views/custom_month_picker.dart';
+part of '../views/custom_month_picker_dialog.dart';
 
 
-class _MonthYearController extends GetxController {
-  _MonthYearController(
+class _MonthYearDialogController extends GetxController {
+  _MonthYearDialogController(
       {this.firstYear,
       this.lastYear,
       this.initialMonth,
@@ -11,7 +11,7 @@ class _MonthYearController extends GetxController {
       this.lastEnabledMonth});
 
   /// static method to get the controller instance from anywhere
-  static _MonthYearController of(
+  static _MonthYearDialogController of(
       {int? firstYear,
       int? lastYear,
       int? initialMonth,
@@ -23,7 +23,7 @@ class _MonthYearController extends GetxController {
       return Get.find();
     } catch (e) {
       // if not, create a new instance and return it
-      return Get.put(_MonthYearController(
+      return Get.put(_MonthYearDialogController(
         firstYear: firstYear ?? 1900,
         lastYear: lastYear ?? DateTime.now().year,
         initialMonth: initialMonth ?? DateTime.now().month,

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -7,98 +5,6 @@ import 'package:intl/intl.dart';
 part '../controller/month_year_controller.dart';
 part 'month_picker.dart';
 part 'year_picker.dart';
-
-/// public method to access the month picker dialog with the required parameters
-void showMonthPicker(context,
-    {required Function(int, int) onSelected,
-    int? firstYear,
-    int? initialSelectedMonth,
-    int? initialSelectedYear,
-    int? lastYear,
-    int? firstEnabledMonth,
-    int? lastEnabledMonth,
-    String selectButtonText = "OK",
-    String cancelButtonText = "Cancel",
-    Color highlightColor = Colors.green,
-    Color? contentBackgroundColor = Colors.white,
-    Color? dialogBackgroundColor,
-    Color? textColor}) {
-  // check if the parameters are valid
-  try {
-    // check if the first enabled month is valid
-    if (firstEnabledMonth != null) {
-      assert(firstEnabledMonth >= 1 && firstEnabledMonth <= 12);
-    }
-
-    // check if the last enabled month is valid
-    if (lastEnabledMonth != null) {
-      assert(lastEnabledMonth >= 1 && lastEnabledMonth <= 12);
-    }
-
-    firstEnabledMonth ??= 1;
-    lastEnabledMonth ??= 12;
-    firstYear ??= 1900;
-    lastYear ??= DateTime.now().year;
-    initialSelectedMonth ??= DateTime.now().month;
-    initialSelectedYear ??= DateTime.now().year;
-
-    // check if the first year is less than the last year
-    assert(firstYear <= lastYear);
-
-    // check if the initial selected year is between the first and last year
-    assert(initialSelectedYear >= firstYear);
-    assert(initialSelectedYear <= lastYear);
-
-    if (initialSelectedYear == firstYear) {
-      // check if the initial selected month is greater than the first enabled month
-      assert(initialSelectedMonth >= firstEnabledMonth);
-    }
-
-    if (initialSelectedYear == lastYear) {
-      // check if the initial selected month is less than the last enabled month
-      assert(initialSelectedMonth <= lastEnabledMonth);
-    }
-  } catch (e) {
-    // if not valid, log the error and return
-    log(e.toString(), name: "flutter_custom_month_picker");
-    return;
-  }
-
-  /// show the dialog
-  showDialog(
-      context: context,
-      builder: (BuildContext ctx) {
-        return CustomMonthPicker(
-            onSelected: onSelected,
-            firstYear: firstYear,
-            initialSelectedMonth: initialSelectedMonth,
-            initialSelectedYear: initialSelectedYear,
-            lastYear: lastYear,
-            firstEnabledMonth: firstEnabledMonth,
-            lastEnabledMonth: lastEnabledMonth,
-            selectButtonText: selectButtonText,
-            cancelButtonText: cancelButtonText,
-            highlightColor: highlightColor,
-            contentBackgroundColor: contentBackgroundColor,
-            dialogBackgroundColor: dialogBackgroundColor,
-            textColor: textColor);
-      });
-
-  // CustomMonthPicker(
-  //     onSelected: onSelected,
-  //     firstYear: firstYear,
-  //     initialSelectedMonth: initialSelectedMonth,
-  //     initialSelectedYear: initialSelectedYear,
-  //     lastYear: lastYear,
-  //     firstEnabledMonth: firstEnabledMonth,
-  //     lastEnabledMonth: lastEnabledMonth,
-  //     selectButtonText: selectButtonText,
-  //     cancelButtonText: cancelButtonText,
-  //     highlightColor: highlightColor,
-  //     contentBackgroundColor: contentBackgroundColor,
-  //     dialogBackgroundColor: dialogBackgroundColor,
-  //     textColor: textColor);
-}
 
 class CustomMonthPicker extends StatefulWidget {
   const CustomMonthPicker({
