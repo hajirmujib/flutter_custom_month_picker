@@ -24,6 +24,7 @@ class CustomMonthPicker extends StatefulWidget {
     this.lastEnabledMonth,
     this.textStyle,
     this.isDialog = false,
+    required this.controller,
   });
 
   final Function(int, int) onSelected;
@@ -41,6 +42,7 @@ class CustomMonthPicker extends StatefulWidget {
   final Color? contentBackgroundColor;
   final TextStyle? textStyle;
   final bool isDialog;
+  final MonthYearController controller;
 
   @override
   State<CustomMonthPicker> createState() => _CustomMonthPickerState();
@@ -48,13 +50,13 @@ class CustomMonthPicker extends StatefulWidget {
 
 class _CustomMonthPickerState extends State<CustomMonthPicker>
     with TickerProviderStateMixin {
-  late _MonthYearController controller;
+  late MonthYearController controller;
 
   @override
   void initState() {
     super.initState();
     // initialize the controller with the required parameters
-    controller = _MonthYearController.of(
+    controller = MonthYearController.of(
       firstYear: widget.firstYear,
       initialMonth: widget.initialSelectedMonth,
       initialYear: widget.initialSelectedYear,
@@ -62,6 +64,13 @@ class _CustomMonthPickerState extends State<CustomMonthPicker>
       firstEnabledMonth: widget.firstEnabledMonth,
       lastEnabledMonth: widget.lastEnabledMonth,
     );
+    controller = widget.controller;
+    // controller = widget.controller;
+  }
+
+  void resetDate() {
+    controller.setYear(controller.initialYear!);
+    controller.setMonth(controller.initialMonth!);
   }
 
   @override
@@ -270,6 +279,6 @@ class _CustomMonthPickerState extends State<CustomMonthPicker>
   /// method to close the dialog and delete the controller
   void pop() {
     Navigator.pop(context);
-    Get.delete<_MonthYearController>();
+    Get.delete<MonthYearController>();
   }
 }

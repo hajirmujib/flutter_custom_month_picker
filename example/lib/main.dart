@@ -29,7 +29,15 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int month = 3, year = 2023;
+  int month = 3, year = 2024;
+  final MonthYearController controller = MonthYearController.of();
+
+  void resetDate() {
+    setState(() {
+      month = 3;
+      year = 2024;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +49,16 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            InkWell(
+                onTap: () {
+                  resetDate();
+                  controller.setMonth(3);
+                  controller.setYear(2024);
+                },
+                child: const Text("Reset Date")),
+            const SizedBox(
+              height: 25,
+            ),
             Container(
               padding: const EdgeInsets.all(16),
               margin: const EdgeInsets.symmetric(horizontal: 24),
@@ -48,6 +66,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   border: Border.all(color: Colors.grey),
                   borderRadius: BorderRadius.circular(8)),
               child: CustomMonthPicker(
+                controller: controller,
+                initialSelectedMonth: month,
+                initialSelectedYear: year,
                 highlightColor: const Color(0xFF1FA0C9),
                 onSelected: (month, year) {
                   if (kDebugMode) {

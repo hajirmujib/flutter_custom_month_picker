@@ -16,13 +16,13 @@ class _MonthPicker extends StatefulWidget {
 }
 
 class _MonthPickerState extends State<_MonthPicker> {
-  late _MonthYearController controller;
+  late MonthYearController controller;
 
   @override
   void initState() {
     super.initState();
     // get the controller from the parent
-    controller = _MonthYearController.of();
+    controller = MonthYearController.of();
   }
 
   @override

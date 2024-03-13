@@ -1,17 +1,19 @@
 part of '../views/custom_month_picker.dart';
 
 
-class _MonthYearController extends GetxController {
-  _MonthYearController(
+class MonthYearController extends GetxController {
+  MonthYearController(
       {this.firstYear,
       this.lastYear,
       this.initialMonth,
       this.initialYear,
       this.firstEnabledMonth,
-      this.lastEnabledMonth});
+      this.lastEnabledMonth,
+      
+      });
 
   /// static method to get the controller instance from anywhere
-  static _MonthYearController of(
+  static MonthYearController of(
       {int? firstYear,
       int? lastYear,
       int? initialMonth,
@@ -23,13 +25,14 @@ class _MonthYearController extends GetxController {
       return Get.find();
     } catch (e) {
       // if not, create a new instance and return it
-      return Get.put(_MonthYearController(
+      return Get.put(MonthYearController(
         firstYear: firstYear ?? 1900,
         lastYear: lastYear ?? DateTime.now().year,
         initialMonth: initialMonth ?? DateTime.now().month,
         initialYear: initialYear ?? DateTime.now().year,
         firstEnabledMonth: firstEnabledMonth ?? 1,
         lastEnabledMonth: lastEnabledMonth ?? 12,
+        
       ));
     }
   }
